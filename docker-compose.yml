@@ -1,0 +1,47 @@
+version: '3'
+services:
+
+  activemq:
+    image: rmohr/activemq:5.15.9
+
+  mongodb:
+    image: mongo:2.6
+    ports:
+      - 27017:27017
+
+  #
+  #  mongorestore
+  #
+  mongo-seed:
+    build:
+      context: ../
+      dockerfile: $PWD/mongo-seed/Dockerfile
+    links:
+      - mongodb
+
+  gbuff-service:
+    stdin_open: true
+#    command: bash -c "cd gbuff-service && sbt run"
+    command: bash -c "cd gbuff-service && sbt run -Dmongo.uri=mongodb://mongodb:27017/gbuff"
+    build:
+      context: ../
+      dockerfile: $PWD/gbuff-service/Dockerfile
+    volumes:
+      - ./../:/buff
+      - ./.ivy2:/root/.ivy2
+      - ./.sbt:/root/.sbt
+    ports:
+      - 9000:9000
+    depends_on:
+      - mongodb
+      - activemq
+
+
+#  Gui для монги, вчера работало, сегодня перестала.
+#
+#  mongo-express:
+#    image: mongo-express
+#    restart: always
+#    ports:
+#      - 8081:8081
+
