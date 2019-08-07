@@ -2,3 +2,6 @@
 .ivy2
 .sbt
 project
+nginx/logs
+.env
+logs

@@ -15,6 +15,14 @@ buffme
 ```
 
 
+### Conf php base image
+```
+docker build \
+  --build-arg TIMEZONE="Europe/Moscow" \
+  --build-arg SSH_PRIVATE_KEY="$(cat ~/.ssh/buff_docker_deploy)" \
+  -t buff-php ./buff-php
+```
+
 ### Conf gbuff-service
 
 
